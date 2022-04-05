@@ -2,9 +2,6 @@ const form = document.querySelector('form')
 const input = document.querySelector('#newTask')
 const button = document.querySelector('button')
 const ul = document.querySelector('ul')
-// const li = document.querySelector('li')
-// const check = document.querySelector('#checkTask')
-
 
 const finishedTask = () => {
   const check = document.querySelector('#checkTask')
@@ -18,22 +15,31 @@ const finishedTask = () => {
 
 const addNewTask = (inputValue) => {
   ul.innerHTML += `
-  <li>
-  <input type="checkbox" id="checkTask" onclick="finishedTask()">
-  ${inputValue}
-  <button>Delete</button>
+  <li data-todo="${inputValue}">
+    <input type="checkbox" id="checkTask" onclick="finishedTask()">
+    <span>${inputValue}</span>
+    <button data-trash="${inputValue}">🗑️</button>
   </li>
   `
+  event.target.reset()
 }
 
-const clearContent = () => {
-  input.value = ''
+const deleteTask = clickedElement => {
+  const trashDataValue = clickedElement.dataset.trash
+  const todo = document.querySelector(`[data-todo="${trashDataValue}"]`)
+
+  if (trashDataValue) {
+    todo.remove()
+  }
 }
+
+ul.addEventListener('click', event => {
+  const clickedElement = event.target
+  deleteTask(clickedElement)
+})
 
 form.addEventListener('submit', event => {
   event.preventDefault()
-  const check = document.querySelector('#checkTask')
   const inputValue = event.target.newTask.value
   addNewTask(inputValue)
-  clearContent()
 })
