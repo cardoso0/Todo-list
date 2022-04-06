@@ -14,13 +14,16 @@ const finishedTask = () => {
 }
 
 const addNewTask = (inputValue) => {
-  ul.innerHTML += `
-  <li data-todo="${inputValue}">
-    <input type="checkbox" id="checkTask" onclick="finishedTask()">
-    <span>${inputValue}</span>
-    <button data-trash="${inputValue}">🗑️</button>
-  </li>
-  `
+  if (inputValue.length) {
+    ul.innerHTML += `
+    <li data-todo="${inputValue}">
+      <input type="checkbox" id="checkTask" onclick="finishedTask()">
+      <span>${inputValue}</span>
+      <button data-trash="${inputValue}">🗑️</button>
+    </li>
+    `
+  }
+
   event.target.reset()
 }
 
@@ -40,6 +43,6 @@ ul.addEventListener('click', event => {
 
 form.addEventListener('submit', event => {
   event.preventDefault()
-  const inputValue = event.target.newTask.value
+  const inputValue = event.target.newTask.value.trim()
   addNewTask(inputValue)
 })
