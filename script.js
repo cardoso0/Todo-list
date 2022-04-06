@@ -3,22 +3,24 @@ const input = document.querySelector('#newTask')
 const button = document.querySelector('button')
 const ul = document.querySelector('ul')
 
-const finishedTask = () => {
-  const check = document.querySelector('#checkTask')
-  const li = document.querySelector('li')
-  if (check.checked) {
-    li.classList.add('teste')
+const finishedTask = (clickedElement) => {
+  const checkDataValue = clickedElement.dataset.check
+  const checkBox = document.querySelector(`[data-check="${checkDataValue}"]`)
+  const span = document.querySelector(`[data-item="${checkDataValue}"]`)
+  
+  if (checkBox.checked) {
+    span.classList.add('finished')
     return
   }
-  li.classList.remove('teste')
+  span.classList.remove('finished')
 }
 
 const addNewTask = (inputValue) => {
   if (inputValue.length) {
     ul.innerHTML += `
     <li data-todo="${inputValue}">
-      <input type="checkbox" id="checkTask" onclick="finishedTask()">
-      <span>${inputValue}</span>
+      <input type="checkbox" id="checkTask" data-check="${inputValue}">
+      <span data-item="${inputValue}">${inputValue}</span>
       <button data-trash="${inputValue}">🗑️</button>
     </li>
     `
@@ -39,6 +41,7 @@ const deleteTask = clickedElement => {
 ul.addEventListener('click', event => {
   const clickedElement = event.target
   deleteTask(clickedElement)
+  finishedTask(clickedElement)
 })
 
 form.addEventListener('submit', event => {
